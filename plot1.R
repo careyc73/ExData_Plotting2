@@ -8,5 +8,13 @@ fetchNEIData <- function() {
 
 fetchNEIData()
 
-emmissionsData <- readRDS("summarySCC_PM25.rds")
-sourceClassifications <- readRDS("Source_Classification_Code.rds")
+emissionsData <- data.table(readRDS("summarySCC_PM25.rds"))
+sourceClassifications <- data.table(readRDS("Source_Classification_Code.rds"))
+
+emissionsSummedByYear <- emissionsData[,lapply(.SD, sum), by=year, .SDcols = c("Emissions")]
+
+png(file="plot1.png")
+
+plot(emissionsSummedByYear$year, emissionsSummedByYear$Emissions, type="l", ylab="Total Emissions in PM2.5", xlab="Year")
+
+dev.off()
