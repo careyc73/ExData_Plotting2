@@ -10,12 +10,12 @@ library("data.table")
 
 fetchNEIData()
 
-emissionsData <- data.table(readRDS("summarySCC_PM25.rds"))
+emissionsData <- subset(data.table(readRDS("summarySCC_PM25.rds")), fips=="24510", c("Emissions", "year"))
 
 emissionsSummedByYear <- emissionsData[,lapply(.SD, sum), by=year, .SDcols = c("Emissions")]
 
-png(file="plot1.png")
+png(file="plot2.png")
 
-plot(emissionsSummedByYear$year, emissionsSummedByYear$Emissions, type="l", ylab="Total Emissions in PM2.5", xlab="Year")
+plot(emissionsSummedByYear$year, emissionsSummedByYear$Emissions, type="l", ylab="Total Emissions in PM2.5 (Baltimore)", xlab="Year")
 
 dev.off()
