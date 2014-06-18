@@ -19,7 +19,6 @@ vehicleSourceCodes <- data.table(subset(sourceCodes, motorVehiclesLogicalVector,
 vehicleEmissionsInBaltimore <- subset(emissionsData[vehicleSourceCodes], fips == "24510")
 
 baltimoreVehicleTotals <- vehicleEmissionsInBaltimore[,lapply(.SD, sum), by=c("year","Data.Category"), .SDcols = c("Emissions")]
-baltimoreVehicleTotals <- baltimoreVehicleTotals[complete.cases(baltimoreVehicleTotals)]
 
 qplot(year, Emissions, data=baltimoreVehicleTotals, color=Data.Category, geom="line")
 
