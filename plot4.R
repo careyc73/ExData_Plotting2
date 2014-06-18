@@ -14,14 +14,14 @@ fetchNEIData()
 emissionsData <- data.table(readRDS("summarySCC_PM25.rds"), key="SCC")
 sourceCodes <- data.table(readRDS("Source_Classification_Code.rds"), key="SCC")
 
-coalLogical <- grepl("Coal", sourceCodes$Short.Name) | grepl("Coal", sourceCodes$EI.Sector) | grepl("Coal", sourceCodes$SCC.Level.Four)
-coalUses <- data.table(subset(sourceCodes, coalLogical, c("SCC", "SCC.Level.Two")), key="SCC")
-emissionsFromCoal <- emissionsData[coalUses]
+coalRows <- grepl("Coal", sourceCodes$Short.Name) | grepl("Coal", sourceCodes$EI.Sector) | grepl("Coal", sourceCodes$SCC.Level.Four)
+coalSourceCodes <- data.table(subset(sourceCodes, coalRows, c("SCC", "SCC.Level.Two")), key="SCC")
+emissionsFromCoal <- emissionsData[coalSourceCodes]
 
 coalEmissionTotals <- emissionsFromCoal[,lapply(.SD, sum), by=c("year","SCC.Level.Two"), .SDcols = c("Emissions")]
 coalEmissionTotals <- coalEmissionTotals[complete.cases(coalEmissionTotals)]
 
-trellis.device(device="png", filename="plot4.png")
+png("plot4.png", width=1200, height=600)
 
 smallerPanelFontSizes <- function(which.panel, factor.levels, ...) {
   panel.rect(0, 0, 1, 1, col = "yellow",border = 1)
@@ -33,4 +33,3 @@ latticePlot <- xyplot(coalEmissionTotals$Emissions ~ coalEmissionTotals$year | c
 print(latticePlot)
 
 dev.off()
-#ggsave("plot4.png")
