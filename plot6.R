@@ -27,6 +27,7 @@ setnames(totalByTypeAndLocation, c("year", "Vehicle.Category", "Location", "Emis
 
 ggplot(totalByTypeAndLocation, 
        aes(x=year, y=Emissions, colour=Location, shape = Vehicle.Category,
-       group=interaction(Location, Vehicle.Category))) + geom_point(size=4) + geom_line()
+       group=interaction(Location, Vehicle.Category))) + geom_point(size=2) + geom_line() +
+       theme(text = element_text(size=5))
 
-ggsave("plot6.png")
+ggsave("plot6.png", width=4, height=2)

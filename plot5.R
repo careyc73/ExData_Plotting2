@@ -20,6 +20,7 @@ vehicleEmissionsInBaltimore <- subset(emissionsData[vehicleSourceCodes], fips ==
 
 baltimoreVehicleTotals <- vehicleEmissionsInBaltimore[,lapply(.SD, sum), by=c("year","Data.Category"), .SDcols = c("Emissions")]
 
-qplot(year, Emissions, data=baltimoreVehicleTotals, color=Data.Category, geom="line")
+qplot(year, Emissions, data=baltimoreVehicleTotals, color=Data.Category, geom="line") +
+    theme(text = element_text(size=5))
 
-ggsave("plot5.png")
+ggsave("plot5.png", width=4, height=2)
